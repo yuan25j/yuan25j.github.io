@@ -63,13 +63,13 @@ author:
   bio    : "Undergraduate Student at the Univeristy of North Carolina at Chapel Hill completeting a Bachelors of Science in Computer Science."
   links:
     - label: " Linkedin"
-      icon: "fab fa-fw linkedin-in"
+      icon: "fab fa-linkedin-in"
       url: "https://www.linkedin.com/in/jiangyuan-yuan-867686204/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/yuan25j/"
     - label: "johnyuan2021@gmail.com"
-      icon: "fab fa-fw fa-envelope"
+      icon: "fab fa-envelope"
       
 
 footer:
