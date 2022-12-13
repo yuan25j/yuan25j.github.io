@@ -62,18 +62,15 @@ author:
   avatar : "/assets/images/DSC_1242.jpg"
   bio    : "Undergraduate Student at the Univeristy of North Carolina at Chapel Hill completeting a Bachelors of Science in Computer Science."
   links:
-    - label: "Linkedin"
-      icon: "fab fa-linkedin-in"
+    - label: " Linkedin"
+      icon: "fab fa-fw linkedin-in"
       url: "https://www.linkedin.com/in/jiangyuan-yuan-867686204/"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/yuan25j/"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/"
+    - label: "johnyuan2021@gmail.com"
+      icon: "fab fa-fw fa-envelope"
+      
 
 footer:
   links:
