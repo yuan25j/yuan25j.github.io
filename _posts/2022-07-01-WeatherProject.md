@@ -1,6 +1,5 @@
 ---
-title: "Weather Project!"
-date: 2022-07-101T15:34:30-04:00
+title: "Weather Project"
 categories:
   - blog
 tags:
