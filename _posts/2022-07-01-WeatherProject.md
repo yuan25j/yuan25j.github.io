@@ -1,5 +1,6 @@
 ---
 title: "Weather Project"
+date: 2021-07-01T15:34:30-04:00
 categories:
   - blog
 tags:
