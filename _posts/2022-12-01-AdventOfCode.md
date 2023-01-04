@@ -1,5 +1,5 @@
 ---
-title: "Akari Light-up Game"
+title: "Advent Of Code Challenge"
 date: 2022-12-01T15:34:30-04:00
 categories:
   - portfolio
