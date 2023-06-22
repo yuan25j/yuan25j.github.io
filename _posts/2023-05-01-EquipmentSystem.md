@@ -1,5 +1,5 @@
 ---
-title: "Website Registration"
+title: "Interactive Equipment System"
 date: 2023-05-01T15:34:30-04:00
 categories:
   - portfolio
