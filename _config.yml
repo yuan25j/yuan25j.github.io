@@ -60,7 +60,7 @@ plugins:
 author:
   name   : "John Yuan"
   avatar : "/assets/images/DSC_1242.jpg"
-  bio    : "Undergraduate Student at the Univeristy of North Carolina at Chapel Hill completeting a Bachelors of Science in Computer Science."
+  bio    : "Graduate Student at the Univeristy of North Carolina at Chapel Hill completeting a Masters in Computer Science."
   links:
     - label: " Linkedin"
       icon: "fab fa-linkedin-in"
