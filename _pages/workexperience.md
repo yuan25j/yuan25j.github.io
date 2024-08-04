@@ -1,8 +1,7 @@
 ---
 title: "Work Experiences"
 permalink: /work/
-collection: work
-layout: experiences
+layout: collection
 author_profile: true
 ---
 
