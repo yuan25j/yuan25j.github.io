@@ -102,7 +102,7 @@ defaults:
       author_profile: true
   - scope:
       path: "_experiences"
-      type: experiences
+      type: posts
     values:
       layout: single
       author_profile: true
