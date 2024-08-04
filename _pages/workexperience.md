@@ -1,6 +1,6 @@
 ---
 title: "Work Experiences"
 permalink: /experience/
-layout: posts
+layout: experiences
 author_profile: true
 ---
