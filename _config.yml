@@ -101,7 +101,7 @@ defaults:
       layout: single
       author_profile: true
   - scope:
-      path: ""
+      path: "_experienecs"
       type: experiences
     values:
       layout: single
