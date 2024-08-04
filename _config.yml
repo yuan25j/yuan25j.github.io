@@ -35,6 +35,7 @@ timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 include:
   - _pages
+  - _work
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
@@ -81,6 +82,12 @@ footer:
       icon: "fab fa-fw fa-github"
       url: "https://github.com/yuan25j/"
 
+collections:
+  work:
+    output: true
+    permalink: /work/:title/
+    layout: single
+
 defaults:
   # _posts
   - scope:
@@ -100,16 +107,7 @@ defaults:
     values:
       layout: single
       author_profile: true
-  - scope:
-      path: "_experiences"
-      type: posts
-    values:
-      layout: single
-      author_profile: true
-      read_time: true
-      comments: true
-      share: true
-      related: true
+
 
 category_archive:
   type: liquid
