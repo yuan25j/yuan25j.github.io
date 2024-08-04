@@ -1,0 +1,17 @@
+.collection-container {
+    text-align: center;
+  }
+  
+  .collection-post {
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: left;
+  }
+  
+  .collection-post h2 {
+    text-align: center;
+  }
+  
+  .collection-post p {
+    text-align: justify;
+  }
