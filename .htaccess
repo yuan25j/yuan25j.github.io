@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^(.*)$ https://yuan25j.github.io/portfolio/ [L,R=301] 
