@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from "astro:content";
+import CompanyLogo from "./CompanyLogo.astro";
+
+interface Props {
+  entries: CollectionEntry<"work">[];
+  compact?: boolean;
+}
+
+const { entries, compact = false } = Astro.props;
+const formatter = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+const range = (entry: CollectionEntry<"work">) =>
+  `${formatter.format(entry.data.startDate)} — ${
+    entry.data.endDate === "Present" ? "Present" : formatter.format(entry.data.endDate)
+  }`;
+---
+
+<div class:list={["timeline", { compact }]} data-timeline>
+  {
+    entries.map((entry, index) => (
+      <article class="timeline-item" data-reveal style={`--reveal-delay: ${Math.min(index * 55, 220)}ms`}>
+        <div class="timeline-marker" aria-hidden="true"></div>
+        <div class="timeline-meta">
+          <div class="timeline-date">
+            <span>{range(entry)}</span>
+            {entry.data.endDate === "Present" && <b>Current</b>}
+          </div>
+          <div class="timeline-logo">
+            <CompanyLogo company={entry.data.company} />
+          </div>
+        </div>
+        <div class="timeline-content">
+          <div class="company-heading">
+            <p class="company">{entry.data.company}</p>
+          </div>
+          <h3><a href={`/work/${entry.id}/`}>{entry.data.title}</a></h3>
+          <p>{entry.data.summary}</p>
+          {!compact && (
+            <>
+              <ul class="highlights">
+                {entry.data.highlights.map((highlight) => <li>{highlight}</li>)}
+              </ul>
+              <div class="tags">{entry.data.skills.map((skill) => <span>{skill}</span>)}</div>
+            </>
+          )}
+        </div>
+      </article>
+    ))
+  }
+</div>

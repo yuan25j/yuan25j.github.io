@@ -1,0 +1,32 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+
+const path = Astro.url.pathname;
+const links = [
+  { href: "/about/", label: "About" },
+  { href: "/work/", label: "Work" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/resume/", label: "Résumé" },
+];
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="wordmark" href="/" aria-label="John Yuan, home">JY<span>.</span></a>
+    <nav aria-label="Main navigation">
+      {
+        links.map((link) => (
+          <a href={link.href} aria-current={path.startsWith(link.href) ? "page" : undefined}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="header-actions">
+      <button class="command-trigger" type="button" data-command-open aria-label="Open command menu">
+        <span>Navigate</span><kbd>⌘K</kbd>
+      </button>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>

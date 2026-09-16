@@ -1,7 +1,30 @@
-Welcome to my personal website! My name is John and I am a computer science student at the University of North Carolina at Chapel Hill. I am passionate about using technology to solve problems and create innovative solutions.
+# John Yuan — Portfolio
 
-On my website, you will find information about my education, experience, and projects. I have included some of my recent work, including so you can get an idea of the type of projects I enjoy working on and my skills.
+A fast, accessible portfolio built with Astro, TypeScript, and Tailwind CSS. Content is stored in typed Markdown collections and deployed as a static site to GitHub Pages.
 
-I am always looking for new opportunities to learn and grow, so if you have any questions or want to collaborate on a project, don't hesitate to contact me.
+## Local development
 
-Thank you for visiting my website!
+Requires Node.js 22.19 or newer.
+
+```sh
+npm install
+npm run dev
+```
+
+Open `http://localhost:4321`.
+
+## Commands
+
+- `npm run dev` — start the development server
+- `npm run check` — run Astro and TypeScript diagnostics
+- `npm run build` — type-check and generate the production site
+- `npm run preview` — preview the production build
+
+## Content
+
+- Experience: `src/content/work`
+- Projects: `src/content/projects`
+- Pages and components: `src/pages` and `src/components`
+- Global design tokens: `src/styles/global.css`
+
+Pushing `main` or `master` runs the GitHub Pages workflow in `.github/workflows/deploy.yml`.

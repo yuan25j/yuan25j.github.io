@@ -1,0 +1,126 @@
+<dialog class="command-palette" aria-labelledby="command-title">
+  <div class="command-head">
+    <label id="command-title" for="command-search">Navigate</label>
+    <kbd>Esc</kbd>
+  </div>
+  <input
+    class="command-search"
+    id="command-search"
+    type="search"
+    placeholder="Search pages and links…"
+    autocomplete="off"
+    role="combobox"
+    aria-autocomplete="list"
+    aria-controls="command-options"
+    aria-expanded="true"
+  />
+  <div class="command-list" id="command-options" role="listbox">
+    <a id="command-home" href="/" data-command-item role="option"><span>Home</span><small>Overview</small></a>
+    <a id="command-work" href="/work/" data-command-item role="option"><span>Work</span><small>Experience</small></a>
+    <a id="command-projects" href="/projects/" data-command-item role="option"><span>Projects</span><small>Case studies</small></a>
+    <a id="command-about" href="/about/" data-command-item role="option"><span>About</span><small>Background</small></a>
+    <a id="command-resume" href="/resume/" data-command-item role="option"><span>Résumé</span><small>Print view</small></a>
+    <a id="command-github" href="https://github.com/yuan25j" target="_blank" rel="noreferrer" data-command-item role="option"><span>GitHub ↗</span><small>Code</small></a>
+    <a id="command-linkedin" href="https://www.linkedin.com/in/john-yuan-867686204/" target="_blank" rel="noreferrer" data-command-item role="option"><span>LinkedIn ↗</span><small>Connect</small></a>
+    <button id="command-email" type="button" data-copy-email data-command-item role="option"><span>Copy email</span><small data-copy-status aria-live="polite">johnyuan2021@gmail.com</small></button>
+    <p class="command-empty" role="status" hidden>No matching item.</p>
+  </div>
+</dialog>
+
+<script>
+  const email = "johnyuan2021@gmail.com";
+  let commandCleanup: AbortController | undefined;
+
+  function setupCommands() {
+    const dialog = document.querySelector<HTMLDialogElement>(".command-palette");
+    const input = dialog?.querySelector<HTMLInputElement>(".command-search");
+    if (!dialog || !input) return;
+
+    commandCleanup?.abort();
+    commandCleanup = new AbortController();
+    const { signal } = commandCleanup;
+    const items = Array.from(dialog.querySelectorAll<HTMLElement>("[data-command-item]"));
+    const empty = dialog.querySelector<HTMLElement>(".command-empty");
+    let visibleItems = items;
+    let activeIndex = 0;
+
+    const setActive = (index: number) => {
+      items.forEach((item) => {
+        item.classList.remove("is-selected");
+        item.setAttribute("aria-selected", "false");
+      });
+      if (!visibleItems.length) {
+        input.removeAttribute("aria-activedescendant");
+        return;
+      }
+      activeIndex = (index + visibleItems.length) % visibleItems.length;
+      visibleItems[activeIndex].classList.add("is-selected");
+      visibleItems[activeIndex].setAttribute("aria-selected", "true");
+      input.setAttribute("aria-activedescendant", visibleItems[activeIndex].id);
+      visibleItems[activeIndex].scrollIntoView({ block: "nearest" });
+    };
+
+    const filter = () => {
+      const query = input.value.trim().toLowerCase();
+      visibleItems = items.filter((item) => {
+        const matches = item.textContent?.toLowerCase().includes(query) ?? false;
+        item.hidden = !matches;
+        return matches;
+      });
+      if (empty) empty.hidden = visibleItems.length > 0;
+      setActive(0);
+    };
+
+    const open = () => {
+      if (!dialog.open) dialog.showModal();
+      input.value = "";
+      filter();
+      requestAnimationFrame(() => input.focus());
+    };
+    document.querySelectorAll<HTMLElement>("[data-command-open]").forEach((button) => {
+      button.addEventListener("click", open, { signal });
+    });
+    document.addEventListener("keydown", (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        dialog.open ? dialog.close() : open();
+      }
+    }, { signal });
+    input.addEventListener("input", filter, { signal });
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        setActive(activeIndex + 1);
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        setActive(activeIndex - 1);
+      } else if (event.key === "Enter" && visibleItems.length) {
+        event.preventDefault();
+        visibleItems[activeIndex].click();
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        dialog.close();
+      }
+    }, { signal });
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    }, { signal });
+    items.forEach((item) => {
+      item.addEventListener("pointerenter", () => setActive(visibleItems.indexOf(item)), { signal });
+      if (item instanceof HTMLAnchorElement) {
+        item.addEventListener("click", () => dialog.close(), { signal });
+      }
+    });
+    dialog.querySelector("[data-copy-email]")?.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(email);
+      const status = dialog.querySelector("[data-copy-status]");
+      if (status) status.textContent = "Copied";
+      window.setTimeout(() => {
+        if (status) status.textContent = email;
+      }, 1400);
+    }, { signal });
+  }
+
+  setupCommands();
+  document.addEventListener("astro:page-load", setupCommands);
+</script>

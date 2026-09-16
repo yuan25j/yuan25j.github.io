@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import ProcessGraphic from "../../components/ProcessGraphic.astro";
+
+const projects = (await getCollection("projects"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const researchProjects = projects.filter((project) => project.data.category === "research");
+const softwareProjects = projects.filter((project) => project.data.category === "software");
+---
+
+<BaseLayout title="Projects" description="Research and software projects by John Yuan.">
+  <header class="page-hero shell projects-hero" data-reveal>
+    <div>
+      <p class="eyebrow">Research · Software</p>
+      <h1>Projects.</h1>
+      <p class="lede">Research work in machine learning and LLMs, plus selected software projects.</p>
+    </div>
+    <ProcessGraphic kind="research" />
+  </header>
+
+  <section class="section shell">
+    <div class="section-head" data-reveal>
+      <div>
+        <p class="eyebrow">Research</p>
+        <h2>Research projects.</h2>
+      </div>
+      <p>Technical research involving language models, NLP, retrieval-augmented generation, and machine learning.</p>
+    </div>
+    <div class="project-grid">
+      {researchProjects.map((project, index) => <ProjectCard project={project} index={index} />)}
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="section-head" data-reveal>
+      <div>
+        <p class="eyebrow">Development</p>
+        <h2>Software projects.</h2>
+      </div>
+      <p>Full-stack applications, APIs, desktop software, and programming exercises.</p>
+    </div>
+    <div class="project-grid">
+      {softwareProjects.map((project, index) => <ProjectCard project={project} index={index} />)}
+    </div>
+  </section>
+</BaseLayout>

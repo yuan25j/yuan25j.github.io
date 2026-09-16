@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Timeline from "../../components/Timeline.astro";
+
+const work = (await getCollection("work"))
+  .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+---
+
+<BaseLayout title="Work" description="John Yuan's software engineering experience across Wells Fargo, Truist, and UNC.">
+  <header class="page-hero shell" data-reveal>
+    <p class="eyebrow">Experience · 2022—Present</p>
+    <h1>Professional experience.</h1>
+    <p class="lede">Software engineering roles at Wells Fargo and Truist, plus technology leadership at UNC–Chapel Hill.</p>
+  </header>
+  <section class="section shell">
+    <Timeline entries={work} />
+  </section>
+</BaseLayout>

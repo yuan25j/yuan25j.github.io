@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ProjectGraphic from "./ProjectGraphic.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  index?: number;
+}
+
+const { project, index = 0 } = Astro.props;
+---
+
+<article
+  class="project-card"
+  data-reveal
+  data-pointer-surface
+  style={`--reveal-delay: ${Math.min(index * 70, 210)}ms`}
+>
+  <a class="project-link" href={`/projects/${project.id}/`} aria-label={`View ${project.data.title} case study`}>
+    <ProjectGraphic id={project.id} compact />
+    <div class="project-card-body">
+      <div class="project-number">0{index + 1}</div>
+      <div>
+        <p class="eyebrow">{project.data.skills.slice(0, 3).join(" · ")}</p>
+        <h3>{project.data.title}</h3>
+        <p>{project.data.description}</p>
+      </div>
+      <span class="project-arrow" aria-hidden="true">↗</span>
+    </div>
+  </a>
+</article>

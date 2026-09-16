@@ -1,0 +1,18 @@
+---
+interface Props {
+  company: string;
+  large?: boolean;
+}
+
+const { company, large = false } = Astro.props;
+const normalized = company.toLowerCase();
+const logo = normalized.includes("wells fargo")
+  ? { src: "/logos/wells-fargo.svg", alt: "Wells Fargo" }
+  : normalized.includes("truist")
+    ? { src: "/logos/truist.png", alt: "Truist" }
+    : { src: "/logos/carolina-housing.png", alt: "Carolina Housing" };
+---
+
+<span class:list={["company-logo", { large }]} data-company={normalized.includes("wells") ? "wells-fargo" : normalized.includes("truist") ? "truist" : "carolina-housing"}>
+  <img src={logo.src} alt={`${logo.alt} logo`} loading="lazy" />
+</span>

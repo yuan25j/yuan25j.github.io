@@ -1,0 +1,90 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CommandPalette from "../components/CommandPalette.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = "John Yuan — Software Engineer",
+  description = "Software engineer at Wells Fargo building data platforms, governed ETL workflows, and full-stack applications.",
+  image = "/images/john-yuan.webp",
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
+const pageTitle = title === "John Yuan — Software Engineer" ? title : `${title} — John Yuan`;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "John Yuan",
+  url: Astro.site,
+  image: imageUrl,
+  jobTitle: "Software Engineer",
+  worksFor: { "@type": "Organization", name: "Wells Fargo" },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "University of North Carolina at Chapel Hill",
+  },
+  sameAs: [
+    "https://github.com/yuan25j",
+    "https://www.linkedin.com/in/john-yuan-867686204/",
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#11110f" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23d8ff62%22/><text x=%2250%22 y=%2266%22 text-anchor=%22middle%22 font-size=%2255%22 font-family=%22Arial%22 fill=%22%2311110f%22>JY</text></svg>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <title>{pageTitle}</title>
+    <script is:inline>
+      (() => {
+        document.documentElement.classList.add("js");
+        const saved = localStorage.getItem("theme");
+        const dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      })();
+    </script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <ClientRouter />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <CommandPalette />
+    <script>
+      import { initInteractions } from "../scripts/interactions";
+
+      initInteractions();
+      document.addEventListener("astro:page-load", initInteractions);
+    </script>
+  </body>
+</html>

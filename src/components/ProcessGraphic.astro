@@ -1,0 +1,59 @@
+---
+interface Props {
+  kind: "etl" | "delivery" | "stack" | "research";
+}
+
+const { kind } = Astro.props;
+---
+
+<div class:list={["process-graphic", `process-${kind}`]} data-graphic aria-hidden="true">
+  <svg viewBox="0 0 420 120" role="presentation">
+    {kind === "etl" && (
+      <>
+        <ellipse class="graphic-line graphic-node" cx="50" cy="44" rx="28" ry="12" />
+        <path class="graphic-line" d="M22 44v31c0 7 13 12 28 12s28-5 28-12V44M22 60c0 7 13 12 28 12s28-5 28-12" />
+        <path class="graphic-accent-line draw-line" d="M82 61h69m-13-12 13 12-13 12" />
+        <path class="graphic-fill-soft graphic-node" d="m178 30 30 17v34l-30 17-30-17V47z" />
+        <path class="graphic-accent-line draw-line" d="M211 61h69m-13-12 13 12-13 12" />
+        <rect class="graphic-fill graphic-node" x="282" y="29" width="112" height="64" rx="10" />
+        <path class="graphic-ink-line" d="M302 49h72M302 64h52M302 79h63" />
+      </>
+    )}
+    {kind === "delivery" && (
+      <>
+        {[28, 72, 116].map((x) => <rect class="graphic-paper graphic-node" x={x} y="34" width="31" height="52" rx="5" />)}
+        <path class="graphic-accent-line draw-line" d="M155 60h74m-14-13 14 13-14 13" />
+        <circle class="graphic-fill-soft graphic-node" cx="270" cy="60" r="33" />
+        <path class="graphic-line" d="m255 60 10 10 21-24" />
+        <path class="graphic-accent-line draw-line" d="M304 60h87" />
+        <circle class="graphic-accent graphic-node" cx="392" cy="60" r="10" />
+      </>
+    )}
+    {kind === "stack" && (
+      <>
+        <rect class="graphic-paper graphic-node" x="18" y="26" width="80" height="68" rx="9" />
+        <text class="graphic-label" x="38" y="65">SQL</text>
+        <rect class="graphic-paper graphic-node" x="112" y="26" width="80" height="68" rx="9" />
+        <text class="graphic-label" x="127" y="65">PY</text>
+        <path class="graphic-accent-line draw-line" d="M199 60h27" />
+        <circle class="graphic-fill graphic-node" cx="245" cy="60" r="18" />
+        <path class="graphic-accent-line draw-line" d="M264 60h27" />
+        <rect class="graphic-paper graphic-node" x="298" y="16" width="104" height="39" rx="8" />
+        <rect class="graphic-paper graphic-node" x="298" y="66" width="104" height="39" rx="8" />
+        <text class="graphic-small-label" x="327" y="41">REACT</text>
+        <text class="graphic-small-label" x="333" y="91">JAVA</text>
+      </>
+    )}
+    {kind === "research" && (
+      <>
+        <circle class="graphic-fill-soft graphic-node" cx="51" cy="60" r="17" />
+        <circle class="graphic-fill graphic-node" cx="151" cy="30" r="12" />
+        <circle class="graphic-fill graphic-node" cx="151" cy="90" r="12" />
+        <circle class="graphic-accent graphic-node" cx="258" cy="60" r="20" />
+        <rect class="graphic-paper graphic-node" x="330" y="30" width="68" height="60" rx="9" />
+        <path class="graphic-line draw-line" d="M68 55 139 34M68 65l71 21M163 33l76 20M163 87l76-20M278 60h52" />
+        <path class="graphic-line" d="M345 48h38M345 61h29M345 74h34" />
+      </>
+    )}
+  </svg>
+</div>

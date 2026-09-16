@@ -1,0 +1,20 @@
+<button class="icon-button theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">
+  <span class="sun" aria-hidden="true">☀</span>
+  <span class="moon" aria-hidden="true">☾</span>
+</button>
+
+<script>
+  function setupThemeToggle() {
+    const button = document.querySelector<HTMLButtonElement>(".theme-toggle");
+    if (!button || button.dataset.ready) return;
+    button.dataset.ready = "true";
+    button.addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem("theme", next);
+    });
+  }
+
+  setupThemeToggle();
+  document.addEventListener("astro:page-load", setupThemeToggle);
+</script>

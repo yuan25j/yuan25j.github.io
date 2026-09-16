@@ -1,0 +1,135 @@
+---
+interface Props {
+  id: string;
+  compact?: boolean;
+}
+
+const { id, compact = false } = Astro.props;
+const variant =
+  id.includes("course-scheduler") ? "scheduler" :
+  id.includes("fingerprinting") ? "fingerprint" :
+  id.includes("llm-vs") ? "comparison" :
+  id.includes("rag-") ? "rag" :
+  id.includes("equipment") ? "equipment" :
+  id.includes("registration") ? "registration" :
+  id.includes("akari") ? "akari" :
+  id.includes("weather") ? "weather" : "code";
+---
+
+<div class:list={["project-graphic", { compact }]} data-graphic data-variant={variant} aria-hidden="true">
+  <svg viewBox="0 0 480 240" role="presentation">
+    <rect class="graphic-frame" x="1" y="1" width="478" height="238" rx="18" />
+
+    {variant === "scheduler" && (
+      <g>
+        <path class="graphic-line draw-line" d="M48 55h270v144H48zM48 91h270M102 55v144M156 55v144M210 55v144M264 55v144" />
+        <rect class="graphic-fill graphic-node" x="109" y="101" width="40" height="26" rx="5" />
+        <rect class="graphic-fill-soft graphic-node" x="217" y="136" width="40" height="46" rx="5" />
+        <rect class="graphic-fill graphic-node" x="55" y="138" width="40" height="25" rx="5" />
+        <circle class="graphic-accent graphic-node" cx="391" cy="88" r="28" />
+        <path class="graphic-line draw-line" d="M318 112c31 0 34-24 45-24M318 165c43 0 48-53 58-59M391 116v54" />
+        <path class="graphic-line" d="m378 169 13 13 24-31" />
+      </g>
+    )}
+
+    {variant === "fingerprint" && (
+      <g transform="translate(45 16)">
+        <path class="graphic-line draw-line" d="M195 188c-52-20-76-55-76-98 0-39 32-70 72-70 41 0 75 31 75 72 0 67-34 107-64 128" />
+        <path class="graphic-line draw-line" d="M195 168c-35-17-51-41-51-75 0-28 21-49 48-49 29 0 51 21 51 50 0 50-25 83-48 101" />
+        <path class="graphic-line draw-line" d="M194 140c-18-12-26-26-26-46 0-14 10-25 24-25 15 0 26 11 26 27 0 28-11 49-25 64" />
+        <circle class="graphic-accent graphic-node" cx="194" cy="95" r="9" />
+        <path class="graphic-line draw-line" d="M292 57h91M292 89h64M292 121h79M292 153h48" />
+        <circle class="graphic-fill graphic-node" cx="394" cy="57" r="7" />
+        <circle class="graphic-fill-soft graphic-node" cx="367" cy="89" r="7" />
+        <circle class="graphic-fill graphic-node" cx="382" cy="121" r="7" />
+      </g>
+    )}
+
+    {variant === "comparison" && (
+      <g>
+        <text class="graphic-label" x="44" y="72">LLM</text>
+        <text class="graphic-label" x="44" y="169">ML</text>
+        <path class="graphic-line draw-line" d="M98 66h320M98 163h320" />
+        {[142, 220, 298, 376].map((x, index) => (
+          <g>
+            <circle class:list={["graphic-node", index % 2 ? "graphic-fill-soft" : "graphic-fill"]} cx={x} cy="66" r="15" />
+            <circle class:list={["graphic-node", index % 2 ? "graphic-fill" : "graphic-fill-soft"]} cx={x} cy="163" r="15" />
+          </g>
+        ))}
+        <path class="graphic-accent-line draw-line" d="M111 114h294" />
+        <text class="graphic-small-label" x="210" y="105">SAME EVALUATION</text>
+      </g>
+    )}
+
+    {variant === "rag" && (
+      <g>
+        <rect class="graphic-paper graphic-node" x="39" y="61" width="75" height="98" rx="8" />
+        <rect class="graphic-paper graphic-node" x="56" y="45" width="75" height="98" rx="8" />
+        <path class="graphic-line" d="M73 73h41M73 91h29M73 109h35" />
+        <path class="graphic-line draw-line" d="M139 102h65" />
+        <circle class="graphic-fill-soft graphic-node" cx="239" cy="102" r="35" />
+        <circle class="graphic-line" cx="232" cy="95" r="14" />
+        <path class="graphic-line" d="m243 106 14 14M274 102h62" />
+        <rect class="graphic-fill graphic-node" x="341" y="59" width="99" height="86" rx="12" />
+        <path class="graphic-ink-line" d="M361 84h58M361 103h44M361 122h52" />
+      </g>
+    )}
+
+    {variant === "equipment" && (
+      <g>
+        <path class="graphic-line draw-line" d="M45 49h252v145H45zM129 49v145M213 49v145M45 121h252" />
+        <rect class="graphic-fill graphic-node" x="65" y="70" width="44" height="29" rx="5" />
+        <circle class="graphic-fill-soft graphic-node" cx="171" cy="84" r="19" />
+        <path class="graphic-fill graphic-node" d="M238 71h36v27h-36zM72 145h30v27H72z" />
+        <path class="graphic-line draw-line" d="M317 82h91v76h-91zM338 68h49M338 172h49" />
+        <path class="graphic-accent-line draw-line" d="M278 109h72m0 0-13-13m13 13-13 13" />
+      </g>
+    )}
+
+    {variant === "registration" && (
+      <g>
+        <rect class="graphic-paper graphic-node" x="39" y="56" width="105" height="128" rx="12" />
+        <circle class="graphic-fill-soft graphic-node" cx="91" cy="88" r="18" />
+        <path class="graphic-line" d="M63 125h57M63 145h57M75 164h34" />
+        <path class="graphic-line draw-line" d="M145 120h72" />
+        <rect class="graphic-fill graphic-node" x="217" y="84" width="76" height="72" rx="15" />
+        <text class="graphic-ink-label" x="240" y="126">API</text>
+        <path class="graphic-line draw-line" d="M293 120h70" />
+        <ellipse class="graphic-paper graphic-node" cx="402" cy="89" rx="38" ry="16" />
+        <path class="graphic-line" d="M364 89v61c0 9 17 16 38 16s38-7 38-16V89M364 120c0 9 17 16 38 16s38-7 38-16" />
+      </g>
+    )}
+
+    {variant === "akari" && (
+      <g>
+        <path class="graphic-line draw-line" d="M120 30v180M180 30v180M240 30v180M300 30v180M360 30v180M60 70h360M60 110h360M60 150h360M60 190h360" />
+        <rect class="graphic-fill-soft graphic-node" x="121" y="71" width="58" height="38" />
+        <rect class="graphic-fill-soft graphic-node" x="301" y="151" width="58" height="38" />
+        <circle class="graphic-accent graphic-node" cx="270" cy="90" r="12" />
+        <circle class="graphic-accent graphic-node" cx="90" cy="170" r="12" />
+        <path class="graphic-accent-line draw-line" d="M270 41v31M270 108v83M192 90h60M288 90h112M90 121v31M90 188v20M61 170h11M108 170h131" />
+      </g>
+    )}
+
+    {variant === "weather" && (
+      <g>
+        <circle class="graphic-accent graphic-node" cx="340" cy="78" r="38" />
+        <path class="graphic-accent-line draw-line" d="M340 25V9M340 147v-16M287 78h-18M411 78h-18M302 40l-13-13M390 128l-12-12M378 40l12-13" />
+        <path class="graphic-fill-soft graphic-node" d="M83 162c-25 0-43-16-43-38 0-21 17-38 39-39 9-28 35-47 66-47 37 0 68 28 70 64 24 1 43 20 43 43 0 24-20 44-45 44H83z" />
+        <path class="graphic-line draw-line" d="M78 210v18M130 210v18M182 210v18" />
+      </g>
+    )}
+
+    {variant === "code" && (
+      <g>
+        <rect class="graphic-paper graphic-node" x="47" y="38" width="386" height="164" rx="14" />
+        <path class="graphic-line" d="M47 72h386" />
+        <circle class="graphic-fill" cx="70" cy="55" r="5" />
+        <circle class="graphic-fill-soft" cx="88" cy="55" r="5" />
+        <circle class="graphic-accent" cx="106" cy="55" r="5" />
+        <path class="graphic-accent-line draw-line" d="m91 108-19 15 19 15M125 145l24-50M183 108l19 15-19 15" />
+        <path class="graphic-line draw-line" d="M236 106h142M236 130h108M236 154h126" />
+      </g>
+    )}
+  </svg>
+</div>

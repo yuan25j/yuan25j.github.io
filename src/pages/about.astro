@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Skills from "../components/Skills.astro";
+import CategoryGraphic from "../components/CategoryGraphic.astro";
+---
+
+<BaseLayout title="About" description="About John Yuan, a software engineer at Wells Fargo and UNC computer science graduate.">
+  <header class="page-hero shell" data-reveal>
+    <p class="eyebrow">John Yuan</p>
+    <h1>About me.</h1>
+  </header>
+
+  <section class="section shell about-grid">
+    <img class="portrait" src="/images/john-yuan.webp" alt="John Yuan" width="800" height="1000" loading="eager" data-reveal />
+    <div class="about-copy" data-reveal style="--reveal-delay: 80ms">
+      <p class="eyebrow">Software Engineer · Charlotte, NC</p>
+      <h2>Software engineer at Wells Fargo.</h2>
+      <p>
+        I’m a software engineer at Wells Fargo working across data engineering, governance, and full-stack
+        development. My day-to-day work connects Python and SQL pipelines with a React and Java platform,
+        with a focus on Python and SQL ETL processes and a React and Java application.
+      </p>
+      <p>
+        Before joining full-time, I built high-volume ETL workflows at Wells Fargo and cloud products at
+        Truist. I studied computer science at UNC–Chapel Hill and also led a 25-person student technology team
+        supporting university housing.
+      </p>
+      <p>
+        This portfolio includes my professional experience, selected projects, and the technologies I have used.
+      </p>
+      <div class="about-facts">
+        <div><CategoryGraphic kind="work" /><span>Current role</span><strong>Software Engineer, Wells Fargo</strong></div>
+        <div><CategoryGraphic kind="education" /><span>Education</span><strong>M.S. Computer Science, UNC–Chapel Hill</strong></div>
+        <div><CategoryGraphic kind="location" /><span>Based around</span><strong>Charlotte & Research Triangle</strong></div>
+        <div><CategoryGraphic kind="contact" /><span>Best way to connect</span><a class="back-link" href="mailto:johnyuan2021@gmail.com">Email me ↗</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="section-head" data-reveal>
+      <div><p class="eyebrow">Technical skills</p><h2>Skills and technologies.</h2></div>
+      <p>Languages, frameworks, data tools, and cloud services I have used.</p>
+    </div>
+    <Skills />
+  </section>
+</BaseLayout>

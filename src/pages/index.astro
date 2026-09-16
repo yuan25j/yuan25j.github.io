@@ -1,0 +1,86 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import Timeline from "../components/Timeline.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Skills from "../components/Skills.astro";
+import ProcessGraphic from "../components/ProcessGraphic.astro";
+
+const work = (await getCollection("work"))
+  .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+const projects = (await getCollection("projects"))
+  .filter((project) => project.data.featured)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout>
+  <Hero />
+
+  <section class="section shell" aria-labelledby="impact-title">
+    <div class="section-head" data-reveal>
+      <div>
+        <p class="eyebrow">Experience highlights</p>
+        <h2 id="impact-title">Selected results.</h2>
+      </div>
+      <p>A few measurable results from my software engineering internships.</p>
+    </div>
+    <div class="bento">
+      <article class="bento-panel" data-reveal data-pointer-surface>
+        <div class="metric" aria-label="More than 400,000 records">
+          <span data-count="400" data-suffix="K+" aria-hidden="true">400K+</span>
+        </div>
+        <ProcessGraphic kind="etl" />
+        <h3>records processed weekly</h3>
+        <p class="muted">Across four end-to-end Python ETL pipelines drawing from internal SQL databases.</p>
+      </article>
+      <article class="bento-panel" data-reveal data-pointer-surface style="--reveal-delay: 70ms">
+        <div class="metric" aria-label="More than 200 developer hours">
+          <span data-count="200" data-suffix="+" aria-hidden="true">200+</span>
+        </div>
+        <ProcessGraphic kind="delivery" />
+        <h3>developer hours saved</h3>
+        <p class="muted">By consolidating common Lambda code and reducing friction in a traditional CI/CD pipeline.</p>
+      </article>
+      <article class="bento-panel wide" data-reveal style="--reveal-delay: 120ms">
+        <p class="eyebrow">Current areas of work</p>
+        <h3>Data engineering, governance, and full-stack development</h3>
+        <ProcessGraphic kind="stack" />
+        <p class="lede">Python and SQL ETL processes alongside a React and Java application built with Gradle.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section shell" aria-labelledby="work-title">
+    <div class="section-head" data-reveal>
+      <div><p class="eyebrow">Experience</p><h2 id="work-title">Professional experience.</h2></div>
+      <a class="back-link" href="/work/">Full timeline ↗</a>
+    </div>
+    <Timeline entries={work.slice(0, 3)} compact />
+  </section>
+
+  <section class="section shell" aria-labelledby="projects-title">
+    <div class="section-head" data-reveal>
+      <div><p class="eyebrow">Selected projects</p><h2 id="projects-title">Projects.</h2></div>
+      <a class="back-link" href="/projects/">All projects ↗</a>
+    </div>
+    <div class="project-grid">
+      {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+    </div>
+  </section>
+
+  <section class="section shell" aria-labelledby="skills-title">
+    <div class="section-head" data-reveal>
+      <div><p class="eyebrow">Technical skills</p><h2 id="skills-title">Skills and technologies.</h2></div>
+      <p>Languages, frameworks, data tools, and cloud services I have used.</p>
+    </div>
+    <Skills />
+  </section>
+
+  <section class="section shell">
+    <div class="contact-card" data-reveal data-pointer-surface>
+      <h2>Contact me.</h2>
+      <a class="button" href="mailto:johnyuan2021@gmail.com">johnyuan2021@gmail.com ↗</a>
+    </div>
+  </section>
+</BaseLayout>

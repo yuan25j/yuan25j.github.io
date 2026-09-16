@@ -1,0 +1,71 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const work = (await getCollection("work")).sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+const projects = (await getCollection("projects")).filter((project) => project.data.featured);
+const formatter = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+const dates = (entry: typeof work[number]) =>
+  `${formatter.format(entry.data.startDate)} – ${entry.data.endDate === "Present" ? "Present" : formatter.format(entry.data.endDate)}`;
+---
+
+<BaseLayout title="Résumé" description="Résumé for John Yuan, software engineer specializing in data and full-stack systems.">
+  <article class="resume-sheet">
+    <header class="resume-top">
+      <div>
+        <h1>John Yuan</h1>
+        <p>Software Engineer · Data & Full-Stack Systems</p>
+      </div>
+      <div class="resume-contact">
+        <a href="mailto:johnyuan2021@gmail.com">johnyuan2021@gmail.com</a><br />
+        <a href="https://www.linkedin.com/in/john-yuan-867686204/">LinkedIn</a> ·
+        <a href="https://github.com/yuan25j">GitHub</a><br />
+        Charlotte, NC
+      </div>
+    </header>
+
+    <section class="resume-section">
+      <h2>Profile</h2>
+      <p>Software engineer building governed ETL workflows and full-stack financial applications with Python, SQL, React, Java, and Gradle.</p>
+    </section>
+
+    <section class="resume-section">
+      <h2>Experience</h2>
+      <div>
+        {work.map((entry) => (
+          <div class="resume-item">
+            <h3>{entry.data.title} · {entry.data.company}</h3>
+            <p>{dates(entry)}{entry.data.location ? ` · ${entry.data.location}` : ""}</p>
+            <ul>{entry.data.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Education</h2>
+      <div class="resume-item">
+        <h3>University of North Carolina at Chapel Hill</h3>
+        <p>M.S. Computer Science</p>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Projects</h2>
+      <div>
+        {projects.map((project) => (
+          <div class="resume-item">
+            <h3>{project.data.title}</h3>
+            <p>{project.data.description} {project.data.skills.join(" · ")}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Skills</h2>
+      <p>Python · Java · SQL · TypeScript · React · Angular · FastAPI · Gradle · ETL · Data governance · AWS Lambda · DynamoDB · CloudFormation · CI/CD</p>
+    </section>
+  </article>
+  <button class="button primary print-button" type="button" onclick="window.print()">Print / Save PDF</button>
+</BaseLayout>

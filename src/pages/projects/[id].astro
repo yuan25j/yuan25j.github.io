@@ -1,0 +1,42 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectGraphic from "../../components/ProjectGraphic.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("projects");
+  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<"projects">; }
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <header class="page-hero shell case-header" data-reveal>
+    <div>
+      <a class="back-link" href="/projects/">← All projects</a>
+      <p class="eyebrow">{entry.data.skills.slice(0, 3).join(" · ")}</p>
+      <h1>{entry.data.title}</h1>
+      <p class="lede">{entry.data.description}</p>
+    </div>
+    <dl class="case-meta">
+      <div><dt>Year</dt><dd>{entry.data.date.getUTCFullYear()}</dd></div>
+      <div><dt>Stack</dt><dd>{entry.data.skills.slice(0, 3).join(", ")}</dd></div>
+      {entry.data.github && <div><dt>Source</dt><dd><a class="back-link" href={entry.data.github} target="_blank" rel="noreferrer">GitHub ↗</a></dd></div>}
+      {entry.data.demo && <div><dt>Demo</dt><dd><a class="back-link" href={entry.data.demo} target="_blank" rel="noreferrer">Watch ↗</a></dd></div>}
+    </dl>
+  </header>
+  <div class="case-visual shell" data-reveal>
+    <ProjectGraphic id={entry.id} />
+  </div>
+  <article class="section narrow prose" data-reveal>
+    <p class="eyebrow">The problem</p>
+    <h2>{entry.data.problem}</h2>
+    <Content />
+    <h2>Outcome</h2>
+    <p>{entry.data.outcome}</p>
+    <div class="tags">{entry.data.skills.map((skill) => <span>{skill}</span>)}</div>
+  </article>
+</BaseLayout>

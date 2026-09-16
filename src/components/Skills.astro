@@ -1,0 +1,29 @@
+---
+import CategoryGraphic from "./CategoryGraphic.astro";
+
+const groups = [
+  { name: "Languages", kind: "languages" as const, items: ["Python", "Java", "SQL", "TypeScript", "JavaScript"] },
+  { name: "Data", kind: "data" as const, items: ["ETL", "Data governance", "SQL Server", "Data quality", "Batch processing"] },
+  { name: "Frontend", kind: "frontend" as const, items: ["React", "Angular", "HTML", "CSS", "RxJS"] },
+  { name: "Backend & build", kind: "backend" as const, items: ["FastAPI", "Java services", "Gradle", "Maven", "REST APIs"] },
+  { name: "Cloud & delivery", kind: "cloud" as const, items: ["AWS Lambda", "DynamoDB", "CloudFormation", "CI/CD", "Agile"] },
+];
+---
+
+<div class="skills-grid">
+  {
+    groups.map((group, index) => (
+      <div
+        class="skill-group"
+        data-reveal
+        tabindex="0"
+        aria-label={`${group.name}: ${group.items.join(", ")}`}
+        style={`--reveal-delay: ${index * 55}ms`}
+      >
+        <CategoryGraphic kind={group.kind} />
+        <h3>{group.name}</h3>
+        <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+      </div>
+    ))
+  }
+</div>
