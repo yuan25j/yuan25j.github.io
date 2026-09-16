@@ -1,6 +1,5 @@
 let cleanup: AbortController | undefined;
 let revealObserver: IntersectionObserver | undefined;
-let metricObserver: IntersectionObserver | undefined;
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -31,40 +30,6 @@ function setupReveals() {
   );
 
   elements.forEach((element) => revealObserver?.observe(element));
-}
-
-function setupMetrics() {
-  const metrics = document.querySelectorAll<HTMLElement>("[data-count]");
-  metricObserver?.disconnect();
-
-  if (reducedMotion() || !("IntersectionObserver" in window)) return;
-
-  metricObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const element = entry.target as HTMLElement;
-        const target = Number(element.dataset.count);
-        const suffix = element.dataset.suffix ?? "";
-        const started = performance.now();
-        const duration = 900;
-
-        const update = (now: number) => {
-          const progress = Math.min((now - started) / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          element.textContent = `${Math.round(target * eased)}${suffix}`;
-          if (progress < 1) requestAnimationFrame(update);
-        };
-
-        element.textContent = `0${suffix}`;
-        requestAnimationFrame(update);
-        metricObserver?.unobserve(element);
-      });
-    },
-    { threshold: 0.65 },
-  );
-
-  metrics.forEach((metric) => metricObserver?.observe(metric));
 }
 
 function setupPointerSurfaces(signal: AbortSignal) {
@@ -140,7 +105,6 @@ export function initInteractions() {
   cleanup?.abort();
   cleanup = new AbortController();
   setupReveals();
-  setupMetrics();
   setupPointerSurfaces(cleanup.signal);
   setupScrollEffects(cleanup.signal);
 }

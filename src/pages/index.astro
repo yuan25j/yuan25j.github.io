@@ -4,44 +4,49 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
 import Timeline from "../components/Timeline.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import ProjectGraphic from "../components/ProjectGraphic.astro";
 import Skills from "../components/Skills.astro";
 import ProcessGraphic from "../components/ProcessGraphic.astro";
 
 const work = (await getCollection("work"))
   .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
-const projects = (await getCollection("projects"))
-  .filter((project) => project.data.featured)
+const allProjects = (await getCollection("projects"))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const highlightedIds = ["unc-course-scheduler", "llm-fingerprinting"];
+const highlightedProjects = highlightedIds
+  .map((id) => allProjects.find((project) => project.id === id))
+  .filter((project) => project !== undefined);
+const projects = allProjects
+  .filter((project) => project.data.featured && !highlightedIds.includes(project.id));
 ---
 
 <BaseLayout>
   <Hero />
 
-  <section class="section shell" aria-labelledby="impact-title">
+  <section class="section shell" aria-labelledby="featured-title">
     <div class="section-head" data-reveal>
       <div>
-        <p class="eyebrow">Experience highlights</p>
-        <h2 id="impact-title">Selected results.</h2>
+        <p class="eyebrow">Selected work</p>
+        <h2 id="featured-title">Featured projects.</h2>
       </div>
-      <p>A few measurable results from my software engineering internships.</p>
+      <p>Two projects covering constrained optimization and language-model research.</p>
     </div>
     <div class="bento">
-      <article class="bento-panel" data-reveal data-pointer-surface>
-        <div class="metric" aria-label="More than 400,000 records">
-          <span data-count="400" data-suffix="K+" aria-hidden="true">400K+</span>
-        </div>
-        <ProcessGraphic kind="etl" />
-        <h3>records processed weekly</h3>
-        <p class="muted">Across four end-to-end Python ETL pipelines drawing from internal SQL databases.</p>
-      </article>
-      <article class="bento-panel" data-reveal data-pointer-surface style="--reveal-delay: 70ms">
-        <div class="metric" aria-label="More than 200 developer hours">
-          <span data-count="200" data-suffix="+" aria-hidden="true">200+</span>
-        </div>
-        <ProcessGraphic kind="delivery" />
-        <h3>developer hours saved</h3>
-        <p class="muted">By consolidating common Lambda code and reducing friction in a traditional CI/CD pipeline.</p>
-      </article>
+      {highlightedProjects.map((project, index) => (
+        <a
+          class="bento-panel featured-project"
+          href={`/projects/${project.id}/`}
+          data-reveal
+          data-pointer-surface
+          style={`--reveal-delay: ${index * 70}ms`}
+        >
+          <p class="eyebrow">{project.data.category === "research" ? "Research" : "Software"}</p>
+          <h3>{project.data.title}</h3>
+          <ProjectGraphic id={project.id} compact />
+          <p class="muted">{project.data.description}</p>
+          <span class="back-link">View case study ↗</span>
+        </a>
+      ))}
       <article class="bento-panel wide" data-reveal style="--reveal-delay: 120ms">
         <p class="eyebrow">Current areas of work</p>
         <h3>Data engineering, governance, and full-stack development</h3>
@@ -61,7 +66,7 @@ const projects = (await getCollection("projects"))
 
   <section class="section shell" aria-labelledby="projects-title">
     <div class="section-head" data-reveal>
-      <div><p class="eyebrow">Selected projects</p><h2 id="projects-title">Projects.</h2></div>
+      <div><p class="eyebrow">Additional work</p><h2 id="projects-title">More projects.</h2></div>
       <a class="back-link" href="/projects/">All projects ↗</a>
     </div>
     <div class="project-grid">
