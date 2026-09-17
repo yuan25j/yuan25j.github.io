@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
 
 const work = (await getCollection("work")).sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
 const projects = (await getCollection("projects")).filter((project) => project.data.featured);
@@ -10,6 +11,16 @@ const dates = (entry: typeof work[number]) =>
 ---
 
 <BaseLayout title="Résumé" description="Résumé for John Yuan, software engineer specializing in data and full-stack systems.">
+  <PageHero
+    eyebrow="Printable"
+    title="Résumé."
+    lede="A concise view of experience, education, and selected projects. Use print to save a PDF."
+  >
+    <div class="button-row" slot="actions">
+      <button class="button primary" type="button" onclick="window.print()">Print / Save PDF</button>
+    </div>
+  </PageHero>
+
   <article class="resume-sheet">
     <header class="resume-top">
       <div>
@@ -67,5 +78,4 @@ const dates = (entry: typeof work[number]) =>
       <p>Python · Java · SQL · TypeScript · React · Angular · FastAPI · Gradle · ETL · Data governance · AWS Lambda · DynamoDB · CloudFormation · CI/CD</p>
     </section>
   </article>
-  <button class="button primary print-button" type="button" onclick="window.print()">Print / Save PDF</button>
 </BaseLayout>

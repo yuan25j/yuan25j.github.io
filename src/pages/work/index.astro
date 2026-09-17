@@ -1,19 +1,42 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
 import Timeline from "../../components/Timeline.astro";
+import ContactBand from "../../components/ContactBand.astro";
 
 const work = (await getCollection("work"))
   .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+const current = work.find((entry) => entry.data.endDate === "Present");
+const companies = [...new Set(work.map((entry) => entry.data.company))];
+const started = work[work.length - 1];
+const startYear = started.data.startDate.getUTCFullYear();
 ---
 
 <BaseLayout title="Work" description="John Yuan's software engineering experience across Wells Fargo, Truist, and UNC.">
-  <header class="page-hero shell" data-reveal>
-    <p class="eyebrow">Experience · 2022—Present</p>
-    <h1>Professional experience.</h1>
-    <p class="lede">Software engineering roles at Wells Fargo and Truist, plus technology leadership at UNC–Chapel Hill.</p>
-  </header>
+  <PageHero
+    eyebrow={`Experience · ${startYear}—Present`}
+    title="Professional experience."
+    lede="Software engineering roles at Wells Fargo and Truist, plus technology leadership at UNC–Chapel Hill."
+  />
+
   <section class="section shell">
+    <div class="snapshot-row">
+      <article data-reveal>
+        <span class="eyebrow">Current role</span>
+        <strong>{current ? `${current.data.title}, ${current.data.company}` : "Software Engineer"}</strong>
+      </article>
+      <article data-reveal style="--reveal-delay: 70ms">
+        <span class="eyebrow">Companies</span>
+        <strong>{companies.join(" · ")}</strong>
+      </article>
+      <article data-reveal style="--reveal-delay: 140ms">
+        <span class="eyebrow">Timeline</span>
+        <strong>{startYear} — Present</strong>
+      </article>
+    </div>
     <Timeline entries={work} />
   </section>
+
+  <ContactBand />
 </BaseLayout>

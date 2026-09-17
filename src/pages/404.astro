@@ -1,15 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ContactBand from "../components/ContactBand.astro";
 ---
 
 <BaseLayout title="Page not found" description="This page could not be found." noindex>
-  <section class="page-hero shell" data-reveal>
-    <p class="eyebrow">404</p>
-    <h1>Page not found.</h1>
-    <p class="lede">The requested page does not exist or may have moved.</p>
-    <div class="button-row">
+  <PageHero
+    eyebrow="404"
+    title="Page not found."
+    lede="The requested page does not exist or may have moved."
+  >
+    <div class="button-row" slot="actions">
       <a class="button primary" href="/">Back home</a>
       <a class="button secondary" href="/projects/">Browse projects</a>
     </div>
-  </section>
+  </PageHero>
+  <ContactBand />
 </BaseLayout>

@@ -1,42 +1,71 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudyFrame from "../../components/CaseStudyFrame.astro";
 import CompanyLogo from "../../components/CompanyLogo.astro";
+import ProcessGraphic from "../../components/ProcessGraphic.astro";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("work");
-  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+  const entries = (await getCollection("work"))
+    .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+  return entries.map((entry, index) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      prev: entries[index - 1],
+      next: entries[index + 1],
+    },
+  }));
 }
 
-interface Props { entry: CollectionEntry<"work">; }
-const { entry } = Astro.props;
+interface Props {
+  entry: CollectionEntry<"work">;
+  prev?: CollectionEntry<"work">;
+  next?: CollectionEntry<"work">;
+}
+
+const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
 const formatter = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 const dates = `${formatter.format(entry.data.startDate)} — ${
   entry.data.endDate === "Present" ? "Present" : formatter.format(entry.data.endDate)
 }`;
+const skills = entry.data.skills.join(" ").toLowerCase();
+const processKind = skills.includes("etl") || skills.includes("governance")
+  ? "etl"
+  : skills.includes("lambda") || skills.includes("ci/cd")
+    ? "delivery"
+    : skills.includes("react") || skills.includes("java") || skills.includes("angular")
+      ? "stack"
+      : undefined;
+const meta = [
+  { label: "Company", value: entry.data.company },
+  { label: "Period", value: dates },
+  ...(entry.data.location ? [{ label: "Location", value: entry.data.location }] : []),
+  { label: "Focus", value: entry.data.skills.slice(0, 3).join(", ") },
+];
 ---
 
 <BaseLayout title={`${entry.data.title} at ${entry.data.company}`} description={entry.data.summary}>
-  <header class="page-hero shell case-header" data-reveal>
-    <div>
-      <a class="back-link" href="/work/">← All experience</a>
-      <CompanyLogo company={entry.data.company} large />
-      <p class="eyebrow">{entry.data.company}</p>
-      <h1>{entry.data.title}</h1>
-      <p class="lede">{entry.data.summary}</p>
-    </div>
-    <dl class="case-meta">
-      <div><dt>Company</dt><dd>{entry.data.company}</dd></div>
-      <div><dt>Period</dt><dd>{dates}</dd></div>
-      {entry.data.location && <div><dt>Location</dt><dd>{entry.data.location}</dd></div>}
-      <div><dt>Focus</dt><dd>{entry.data.skills.slice(0, 3).join(", ")}</dd></div>
-    </dl>
-  </header>
-  <article class="section narrow prose" data-reveal>
+  <CaseStudyFrame
+    backHref="/work/"
+    backLabel="← All experience"
+    eyebrow={entry.data.company}
+    title={entry.data.title}
+    lede={entry.data.summary}
+    meta={meta}
+    tags={entry.data.skills}
+    prev={prev ? { href: `/work/${prev.id}/`, label: prev.data.title, kicker: prev.data.company } : undefined}
+    next={next ? { href: `/work/${next.id}/`, label: next.data.title, kicker: next.data.company } : undefined}
+  >
+    <CompanyLogo slot="lead-visual" company={entry.data.company} large />
+    {processKind && (
+      <div class="case-visual shell" slot="visual" data-reveal>
+        <ProcessGraphic kind={processKind} />
+      </div>
+    )}
     <Content />
     <h2>Selected impact</h2>
     <ul>{entry.data.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
-    <div class="tags">{entry.data.skills.map((skill) => <span>{skill}</span>)}</div>
-  </article>
+  </CaseStudyFrame>
 </BaseLayout>

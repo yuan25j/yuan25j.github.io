@@ -4,14 +4,15 @@
 </button>
 
 <script>
+  import { persistTheme } from "../scripts/theme";
+
   function setupThemeToggle() {
     const button = document.querySelector<HTMLButtonElement>(".theme-toggle");
     if (!button || button.dataset.ready) return;
     button.dataset.ready = "true";
     button.addEventListener("click", () => {
       const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      document.documentElement.dataset.theme = next;
-      localStorage.setItem("theme", next);
+      persistTheme(next);
     });
   }
 

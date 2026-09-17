@@ -1,9 +1,16 @@
+---
+import { navLinks } from "../data/nav";
+---
+
 <footer class="site-footer">
   <div class="shell footer-grid">
     <div>
       <a class="wordmark" href="/" aria-label="John Yuan, home">JY<span>.</span></a>
       <p>Software Engineer at Wells Fargo.</p>
     </div>
+    <nav class="footer-nav" aria-label="Footer">
+      {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
     <div class="footer-links">
       <a href="mailto:johnyuan2021@gmail.com">Email</a>
       <a href="https://github.com/yuan25j" target="_blank" rel="noreferrer">GitHub</a>

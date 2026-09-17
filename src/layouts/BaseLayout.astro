@@ -49,9 +49,9 @@ const personSchema = {
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#11110f" />
+    <meta name="theme-color" content="#13294b" />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23d8ff62%22/><text x=%2250%22 y=%2266%22 text-anchor=%22middle%22 font-size=%2255%22 font-family=%22Arial%22 fill=%22%2311110f%22>JY</text></svg>" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%237bafd4%22/><text x=%2250%22 y=%2266%22 text-anchor=%22middle%22 font-size=%2255%22 font-family=%22Arial%22 fill=%22%2313294b%22>JY</text></svg>" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
@@ -62,10 +62,26 @@ const personSchema = {
     <title>{pageTitle}</title>
     <script is:inline>
       (() => {
+        const colors = { light: "#13294b", dark: "#11110f" };
+        const applyTheme = (doc = document) => {
+          const saved = localStorage.getItem("theme");
+          const theme = saved === "dark" || saved === "light"
+            ? saved
+            : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          doc.documentElement.dataset.theme = theme;
+          const meta = doc.querySelector("meta[name='theme-color']");
+          if (meta) meta.setAttribute("content", colors[theme]);
+        };
+
         document.documentElement.classList.add("js");
-        const saved = localStorage.getItem("theme");
-        const dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        applyTheme();
+        document.addEventListener("astro:before-swap", (event) => {
+          const next = event.newDocument;
+          if (!next) return;
+          next.documentElement.dataset.theme = document.documentElement.dataset.theme;
+          applyTheme(next);
+        });
+        document.addEventListener("astro:after-swap", () => applyTheme());
       })();
     </script>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />

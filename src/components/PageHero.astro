@@ -1,0 +1,20 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lede?: string;
+  layout?: "plain" | "split";
+}
+
+const { eyebrow, title, lede, layout = "plain" } = Astro.props;
+---
+
+<header class:list={["page-hero", "shell", layout === "split" && "page-hero-split"]} data-reveal>
+  <div class="page-hero-copy">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{title}</h1>
+    {lede && <p class="lede">{lede}</p>}
+    <slot name="actions" />
+  </div>
+  <slot />
+</header>

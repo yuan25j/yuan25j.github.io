@@ -1,42 +1,57 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudyFrame from "../../components/CaseStudyFrame.astro";
 import ProjectGraphic from "../../components/ProjectGraphic.astro";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("projects");
-  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+  const entries = (await getCollection("projects"))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return entries.map((entry, index) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      prev: entries[index - 1],
+      next: entries[index + 1],
+    },
+  }));
 }
 
-interface Props { entry: CollectionEntry<"projects">; }
-const { entry } = Astro.props;
+interface Props {
+  entry: CollectionEntry<"projects">;
+  prev?: CollectionEntry<"projects">;
+  next?: CollectionEntry<"projects">;
+}
+
+const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
+const meta = [
+  { label: "Year", value: String(entry.data.date.getUTCFullYear()) },
+  { label: "Stack", value: entry.data.skills.slice(0, 3).join(", ") },
+  ...(entry.data.github ? [{ label: "Source", value: "GitHub ↗", href: entry.data.github }] : []),
+  ...(entry.data.demo ? [{ label: "Demo", value: "Watch ↗", href: entry.data.demo }] : []),
+];
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.description}>
-  <header class="page-hero shell case-header" data-reveal>
-    <div>
-      <a class="back-link" href="/projects/">← All projects</a>
-      <p class="eyebrow">{entry.data.skills.slice(0, 3).join(" · ")}</p>
-      <h1>{entry.data.title}</h1>
-      <p class="lede">{entry.data.description}</p>
+  <CaseStudyFrame
+    backHref="/projects/"
+    backLabel="← All projects"
+    eyebrow={entry.data.skills.slice(0, 3).join(" · ")}
+    title={entry.data.title}
+    lede={entry.data.description}
+    meta={meta}
+    tags={entry.data.skills}
+    prev={prev ? { href: `/projects/${prev.id}/`, label: prev.data.title, kicker: prev.data.category === "research" ? "Previous research" : "Previous software" } : undefined}
+    next={next ? { href: `/projects/${next.id}/`, label: next.data.title, kicker: next.data.category === "research" ? "Next research" : "Next software" } : undefined}
+  >
+    <div class="case-visual shell" slot="visual" data-reveal>
+      <ProjectGraphic id={entry.id} />
     </div>
-    <dl class="case-meta">
-      <div><dt>Year</dt><dd>{entry.data.date.getUTCFullYear()}</dd></div>
-      <div><dt>Stack</dt><dd>{entry.data.skills.slice(0, 3).join(", ")}</dd></div>
-      {entry.data.github && <div><dt>Source</dt><dd><a class="back-link" href={entry.data.github} target="_blank" rel="noreferrer">GitHub ↗</a></dd></div>}
-      {entry.data.demo && <div><dt>Demo</dt><dd><a class="back-link" href={entry.data.demo} target="_blank" rel="noreferrer">Watch ↗</a></dd></div>}
-    </dl>
-  </header>
-  <div class="case-visual shell" data-reveal>
-    <ProjectGraphic id={entry.id} />
-  </div>
-  <article class="section narrow prose" data-reveal>
     <p class="eyebrow">The problem</p>
     <h2>{entry.data.problem}</h2>
     <Content />
     <h2>Outcome</h2>
     <p>{entry.data.outcome}</p>
-    <div class="tags">{entry.data.skills.map((skill) => <span>{skill}</span>)}</div>
-  </article>
+  </CaseStudyFrame>
 </BaseLayout>

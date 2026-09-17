@@ -1,14 +1,17 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
 import Skills from "../components/Skills.astro";
 import CategoryGraphic from "../components/CategoryGraphic.astro";
+import ContactBand from "../components/ContactBand.astro";
 ---
 
 <BaseLayout title="About" description="About John Yuan, a software engineer at Wells Fargo and UNC computer science graduate.">
-  <header class="page-hero shell" data-reveal>
-    <p class="eyebrow">John Yuan</p>
-    <h1>About me.</h1>
-  </header>
+  <PageHero
+    eyebrow="John Yuan"
+    title="About me."
+    lede="Software engineer at Wells Fargo, working across data engineering, governance, and full-stack development."
+  />
 
   <section class="section shell about-grid">
     <img class="portrait" src="/images/john-yuan.webp" alt="John Yuan" width="800" height="1000" loading="eager" data-reveal />
@@ -17,8 +20,8 @@ import CategoryGraphic from "../components/CategoryGraphic.astro";
       <h2>Software engineer at Wells Fargo.</h2>
       <p>
         I’m a software engineer at Wells Fargo working across data engineering, governance, and full-stack
-        development. My day-to-day work connects Python and SQL pipelines with a React and Java platform,
-        with a focus on Python and SQL ETL processes and a React and Java application.
+        development. My day-to-day work connects Python and SQL ETL pipelines with a React and Java application
+        built with Gradle.
       </p>
       <p>
         Before joining full-time, I built high-volume ETL workflows at Wells Fargo and cloud products at
@@ -28,12 +31,22 @@ import CategoryGraphic from "../components/CategoryGraphic.astro";
       <p>
         This portfolio includes my professional experience, selected projects, and the technologies I have used.
       </p>
-      <div class="about-facts">
-        <div><CategoryGraphic kind="work" /><span>Current role</span><strong>Software Engineer, Wells Fargo</strong></div>
-        <div><CategoryGraphic kind="education" /><span>Education</span><strong>M.S. Computer Science, UNC–Chapel Hill</strong></div>
-        <div><CategoryGraphic kind="location" /><span>Based around</span><strong>Charlotte & Research Triangle</strong></div>
-        <div><CategoryGraphic kind="contact" /><span>Best way to connect</span><a class="back-link" href="mailto:johnyuan2021@gmail.com">Email me ↗</a></div>
+    </div>
+  </section>
+
+  <section class="section shell" aria-labelledby="background-title">
+    <div class="section-head" data-reveal>
+      <div>
+        <p class="eyebrow">Background</p>
+        <h2 id="background-title">Where I work and studied.</h2>
       </div>
+      <p>Current role, education, and the simplest way to get in touch.</p>
+    </div>
+    <div class="about-facts">
+      <div data-reveal><CategoryGraphic kind="work" /><span>Current role</span><strong>Software Engineer, Wells Fargo</strong></div>
+      <div data-reveal style="--reveal-delay: 70ms"><CategoryGraphic kind="education" /><span>Education</span><strong>M.S. Computer Science, UNC–Chapel Hill</strong></div>
+      <div data-reveal style="--reveal-delay: 140ms"><CategoryGraphic kind="location" /><span>Based around</span><strong>Charlotte & Research Triangle</strong></div>
+      <div data-reveal style="--reveal-delay: 210ms"><CategoryGraphic kind="contact" /><span>Best way to connect</span><a class="back-link" href="mailto:johnyuan2021@gmail.com">Email me ↗</a></div>
     </div>
   </section>
 
@@ -44,4 +57,6 @@ import CategoryGraphic from "../components/CategoryGraphic.astro";
     </div>
     <Skills />
   </section>
+
+  <ContactBand />
 </BaseLayout>

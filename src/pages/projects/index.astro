@@ -1,8 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import ProcessGraphic from "../../components/ProcessGraphic.astro";
+import ContactBand from "../../components/ContactBand.astro";
 
 const projects = (await getCollection("projects"))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -11,16 +13,20 @@ const softwareProjects = projects.filter((project) => project.data.category === 
 ---
 
 <BaseLayout title="Projects" description="Research and software projects by John Yuan.">
-  <header class="page-hero shell projects-hero" data-reveal>
-    <div>
-      <p class="eyebrow">Research · Software</p>
-      <h1>Projects.</h1>
-      <p class="lede">Research work in machine learning and LLMs, plus selected software projects.</p>
-    </div>
+  <PageHero
+    eyebrow="Research · Software"
+    title="Projects."
+    lede="Research work in machine learning and LLMs, plus selected software projects."
+    layout="split"
+  >
     <ProcessGraphic kind="research" />
-  </header>
+    <nav class="category-chips" slot="actions" aria-label="Project categories">
+      <a href="#research">Research ({researchProjects.length})</a>
+      <a href="#software">Software ({softwareProjects.length})</a>
+    </nav>
+  </PageHero>
 
-  <section class="section shell">
+  <section class="section shell" id="research">
     <div class="section-head" data-reveal>
       <div>
         <p class="eyebrow">Research</p>
@@ -33,7 +39,7 @@ const softwareProjects = projects.filter((project) => project.data.category === 
     </div>
   </section>
 
-  <section class="section shell">
+  <section class="section shell" id="software">
     <div class="section-head" data-reveal>
       <div>
         <p class="eyebrow">Development</p>
@@ -45,4 +51,6 @@ const softwareProjects = projects.filter((project) => project.data.category === 
       {softwareProjects.map((project, index) => <ProjectCard project={project} index={index} />)}
     </div>
   </section>
+
+  <ContactBand />
 </BaseLayout>

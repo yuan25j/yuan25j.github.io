@@ -1,0 +1,79 @@
+---
+import ContactBand from "./ContactBand.astro";
+
+interface MetaItem {
+  label: string;
+  value: string;
+  href?: string;
+}
+
+interface Neighbor {
+  href: string;
+  label: string;
+  kicker?: string;
+}
+
+interface Props {
+  backHref: string;
+  backLabel: string;
+  eyebrow: string;
+  title: string;
+  lede: string;
+  meta: MetaItem[];
+  tags: string[];
+  prev?: Neighbor;
+  next?: Neighbor;
+}
+
+const { backHref, backLabel, eyebrow, title, lede, meta, tags, prev, next } = Astro.props;
+---
+
+<header class="page-hero shell case-header" data-reveal>
+  <div>
+    <a class="back-link" href={backHref}>{backLabel}</a>
+    <slot name="lead-visual" />
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{title}</h1>
+    <p class="lede">{lede}</p>
+  </div>
+  <dl class="case-meta">
+    {meta.map((item) => (
+      <div>
+        <dt>{item.label}</dt>
+        <dd>
+          {item.href ? (
+            <a class="back-link" href={item.href} target="_blank" rel="noreferrer">{item.value}</a>
+          ) : item.value}
+        </dd>
+      </div>
+    ))}
+  </dl>
+</header>
+
+<slot name="visual" />
+
+<article class="section narrow prose" data-reveal>
+  <slot />
+  {tags.length > 0 && (
+    <div class="tags">{tags.map((tag) => <span>{tag}</span>)}</div>
+  )}
+</article>
+
+{(prev || next) && (
+  <nav class="case-pager shell" aria-label="More in this section" data-reveal>
+    {prev ? (
+      <a class="case-pager-link" href={prev.href}>
+        <span class="eyebrow">{prev.kicker ?? "Previous"}</span>
+        <strong>{prev.label}</strong>
+      </a>
+    ) : <span class="case-pager-link is-empty"></span>}
+    {next ? (
+      <a class="case-pager-link" href={next.href}>
+        <span class="eyebrow">{next.kicker ?? "Next"}</span>
+        <strong>{next.label}</strong>
+      </a>
+    ) : <span class="case-pager-link is-empty"></span>}
+  </nav>
+)}
+
+<ContactBand />
