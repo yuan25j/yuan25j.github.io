@@ -100,6 +100,41 @@ if (hiddenReveals > 0) failures.push(`${hiddenReveals} reveals stuck hidden with
 const favicon = await mobile.evaluate(() => document.querySelector("link[rel='icon']")?.getAttribute("href") ?? "");
 if (favicon.includes("d8ff62")) failures.push("favicon still uses leftover lime green");
 
+await mobile.close();
+
+const interact = await browser.newContext({
+  viewport: { width: 1440, height: 900 },
+  permissions: ["clipboard-read", "clipboard-write"],
+});
+const page = await interact.newPage();
+await page.goto(`${base}/`, { waitUntil: "networkidle" });
+await page.keyboard.press("Escape");
+
+const emailMe = page.locator(".hero [data-copy-email]");
+await emailMe.click();
+await page.waitForFunction((el) => el?.textContent?.trim() === "Copied", await emailMe.elementHandle());
+
+const contactEmail = page.locator(".contact-card [data-copy-email]");
+await contactEmail.scrollIntoViewIfNeeded();
+await contactEmail.click();
+await page.waitForFunction((el) => el?.textContent?.trim() === "Copied", await contactEmail.elementHandle());
+
+await page.getByRole("link", { name: /View experience/ }).click();
+await page.waitForURL("**/work/");
+if (!page.url().includes("/work/")) failures.push("View experience did not navigate to /work/");
+
+await page.goto(`${base}/`, { waitUntil: "networkidle" });
+const beforeTheme = await themeOf(page);
+await page.locator(".theme-toggle").click();
+const afterTheme = await themeOf(page);
+if (afterTheme === beforeTheme) failures.push("theme toggle did not change data-theme");
+
+const github = page.locator(".footer-links a[href*='github.com']");
+const linkedin = page.locator(".footer-links a[href*='linkedin.com']");
+if ((await github.getAttribute("target")) !== "_blank") failures.push("footer GitHub is not target=_blank");
+if ((await linkedin.getAttribute("target")) !== "_blank") failures.push("footer LinkedIn is not target=_blank");
+
+await interact.close();
 await browser.close();
 
 if (failures.length) {

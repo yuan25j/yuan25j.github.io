@@ -101,10 +101,59 @@ function setupScrollEffects(signal: AbortSignal) {
   update();
 }
 
+async function writeClipboard(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const input = document.createElement("textarea");
+    input.value = text;
+    input.setAttribute("readonly", "");
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    document.body.appendChild(input);
+    input.select();
+    const ok = document.execCommand("copy");
+    input.remove();
+    return ok;
+  }
+}
+
+async function copyEmail(trigger: HTMLElement) {
+  const address = trigger.dataset.email ?? trigger.getAttribute("href")?.replace(/^mailto:/i, "") ?? "";
+  const status = trigger.querySelector<HTMLElement>("[data-copy-status]") ?? trigger;
+  const idle = status.dataset.idleLabel ?? trigger.dataset.idleLabel ?? status.textContent ?? address;
+
+  const copied = await writeClipboard(address);
+  if (!copied) return false;
+  status.textContent = "Copied";
+  window.setTimeout(() => {
+    status.textContent = idle;
+  }, 1400);
+  return true;
+}
+
+function setupEmailActions(signal: AbortSignal) {
+  document.querySelectorAll<HTMLElement>("[data-copy-email]").forEach((trigger) => {
+    trigger.addEventListener(
+      "click",
+      async (event) => {
+        event.preventDefault();
+        const copied = await copyEmail(trigger);
+        if (copied) return;
+        const href = trigger.getAttribute("href") ?? (trigger.dataset.email ? `mailto:${trigger.dataset.email}` : "");
+        if (href) window.location.assign(href);
+      },
+      { signal },
+    );
+  });
+}
+
 export function initInteractions() {
   cleanup?.abort();
   cleanup = new AbortController();
   setupReveals();
   setupPointerSurfaces(cleanup.signal);
   setupScrollEffects(cleanup.signal);
+  setupEmailActions(cleanup.signal);
 }

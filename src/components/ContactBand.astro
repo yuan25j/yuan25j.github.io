@@ -1,6 +1,11 @@
+---
+import EmailAction from "./EmailAction.astro";
+import { email } from "../data/contact";
+---
+
 <section class="section shell">
   <div class="contact-card" data-reveal data-pointer-surface>
     <h2>Contact me.</h2>
-    <a class="button" href="mailto:johnyuan2021@gmail.com">johnyuan2021@gmail.com ↗</a>
+    <EmailAction class="button" label={`${email} ↗`} />
   </div>
 </section>

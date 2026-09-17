@@ -1,3 +1,7 @@
+---
+import EmailAction from "./EmailAction.astro";
+---
+
 <section class="hero shell">
   <div class="hero-copy">
     <p class="eyebrow" data-reveal style="--reveal-delay: 40ms"><span class="status-dot"></span> Software Engineer · Wells Fargo</p>
@@ -8,7 +12,7 @@
     </p>
     <div class="button-row" data-reveal style="--reveal-delay: 250ms">
       <a class="button primary" href="/work/">View experience <span aria-hidden="true">↗</span></a>
-      <a class="button secondary" href="mailto:johnyuan2021@gmail.com">Email me</a>
+      <EmailAction class="button secondary" label="Email me" />
     </div>
   </div>
   <aside class="hero-card" aria-label="Current focus" data-reveal data-pointer-surface data-tilt style="--reveal-delay: 180ms">

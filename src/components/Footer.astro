@@ -1,5 +1,6 @@
 ---
 import { navLinks } from "../data/nav";
+import EmailAction from "./EmailAction.astro";
 ---
 
 <footer class="site-footer">
@@ -12,7 +13,7 @@ import { navLinks } from "../data/nav";
       {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
     </nav>
     <div class="footer-links">
-      <a href="mailto:johnyuan2021@gmail.com">Email</a>
+      <EmailAction label="Email" />
       <a href="https://github.com/yuan25j" target="_blank" rel="noreferrer">GitHub</a>
       <a href="https://www.linkedin.com/in/john-yuan-867686204/" target="_blank" rel="noreferrer">LinkedIn</a>
     </div>

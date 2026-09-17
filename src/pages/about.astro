@@ -4,6 +4,7 @@ import PageHero from "../components/PageHero.astro";
 import Skills from "../components/Skills.astro";
 import CategoryGraphic from "../components/CategoryGraphic.astro";
 import ContactBand from "../components/ContactBand.astro";
+import EmailAction from "../components/EmailAction.astro";
 ---
 
 <BaseLayout title="About" description="About John Yuan, a software engineer at Wells Fargo and UNC computer science graduate.">
@@ -46,7 +47,7 @@ import ContactBand from "../components/ContactBand.astro";
       <div data-reveal><CategoryGraphic kind="work" /><span>Current role</span><strong>Software Engineer, Wells Fargo</strong></div>
       <div data-reveal style="--reveal-delay: 70ms"><CategoryGraphic kind="education" /><span>Education</span><strong>M.S. Computer Science, UNC–Chapel Hill</strong></div>
       <div data-reveal style="--reveal-delay: 140ms"><CategoryGraphic kind="location" /><span>Based around</span><strong>Charlotte & Research Triangle</strong></div>
-      <div data-reveal style="--reveal-delay: 210ms"><CategoryGraphic kind="contact" /><span>Best way to connect</span><a class="back-link" href="mailto:johnyuan2021@gmail.com">Email me ↗</a></div>
+      <div data-reveal style="--reveal-delay: 210ms"><CategoryGraphic kind="contact" /><span>Best way to connect</span><EmailAction class="back-link" label="Email me ↗" /></div>
     </div>
   </section>
 

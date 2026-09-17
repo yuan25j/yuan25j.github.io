@@ -1,3 +1,7 @@
+---
+import { email } from "../data/contact";
+---
+
 <dialog class="command-palette" aria-labelledby="command-title">
   <div class="command-head">
     <label id="command-title" for="command-search">Navigate</label>
@@ -22,13 +26,12 @@
     <a id="command-resume" href="/resume/" data-command-item role="option"><span>Résumé</span><small>Print view</small></a>
     <a id="command-github" href="https://github.com/yuan25j" target="_blank" rel="noreferrer" data-command-item role="option"><span>GitHub ↗</span><small>Code</small></a>
     <a id="command-linkedin" href="https://www.linkedin.com/in/john-yuan-867686204/" target="_blank" rel="noreferrer" data-command-item role="option"><span>LinkedIn ↗</span><small>Connect</small></a>
-    <button id="command-email" type="button" data-copy-email data-command-item role="option"><span>Copy email</span><small data-copy-status aria-live="polite">johnyuan2021@gmail.com</small></button>
+    <button id="command-email" type="button" data-copy-email data-email={email} data-command-item role="option"><span>Copy email</span><small data-copy-status data-idle-label={email} aria-live="polite">{email}</small></button>
     <p class="command-empty" role="status" hidden>No matching item.</p>
   </div>
 </dialog>
 
 <script>
-  const email = "johnyuan2021@gmail.com";
   let commandCleanup: AbortController | undefined;
 
   function setupCommands() {
@@ -111,14 +114,6 @@
         item.addEventListener("click", () => dialog.close(), { signal });
       }
     });
-    dialog.querySelector("[data-copy-email]")?.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(email);
-      const status = dialog.querySelector("[data-copy-status]");
-      if (status) status.textContent = "Copied";
-      window.setTimeout(() => {
-        if (status) status.textContent = email;
-      }, 1400);
-    }, { signal });
   }
 
   setupCommands();
