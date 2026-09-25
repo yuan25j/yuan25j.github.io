@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import ProjectGraphic from "./ProjectGraphic.astro";
+import ProjectPreview from "./ProjectPreview.astro";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -17,7 +17,7 @@ const { project, index = 0 } = Astro.props;
   style={`--reveal-delay: ${Math.min(index * 70, 210)}ms`}
 >
   <a class="project-link" href={`/projects/${project.id}/`} aria-label={`View ${project.data.title} case study`}>
-    <ProjectGraphic id={project.id} compact />
+    <ProjectPreview id={project.id} compact />
     <div class="project-card-body">
       <div class="project-number">0{index + 1}</div>
       <div>

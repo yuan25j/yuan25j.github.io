@@ -1,0 +1,52 @@
+---
+interface Props {
+  url: string;
+  title: string;
+}
+
+const { url, title } = Astro.props;
+const appUrl = url.replace(/\/$/, "");
+---
+
+<figure class="live-demo" data-live-demo data-demo-url={appUrl}>
+  <iframe
+    class="live-demo-frame"
+    title={`${title} live demo`}
+    src={`${appUrl}/?embed=true`}
+    loading="lazy"
+  ></iframe>
+  <figcaption class="live-demo-note">
+    <span>The live app may take a few seconds to wake after idle time.</span>
+    <a class="back-link" href={appUrl} target="_blank" rel="noreferrer">Open app ↗</a>
+  </figcaption>
+</figure>
+
+<script>
+  function embedSrc(url: string) {
+    const dark = document.documentElement.dataset.theme === "dark" ? "&embed_options=dark_theme" : "";
+    return `${url}/?embed=true${dark}`;
+  }
+
+  function setupLiveDemo() {
+    document.querySelectorAll<HTMLElement>("[data-live-demo]").forEach((root) => {
+      const frame = root.querySelector<HTMLIFrameElement>("iframe");
+      const url = root.dataset.demoUrl;
+      if (!frame || !url || root.dataset.ready) return;
+      root.dataset.ready = "true";
+
+      const sync = () => {
+        const next = embedSrc(url);
+        if (frame.src !== next) frame.src = next;
+      };
+
+      sync();
+      new MutationObserver(sync).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+    });
+  }
+
+  setupLiveDemo();
+  document.addEventListener("astro:page-load", setupLiveDemo);
+</script>

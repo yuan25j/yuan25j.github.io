@@ -4,6 +4,7 @@ description: A Streamlit app that turns a plain-language trip request into a day
 date: 2026-09-01
 skills: [Python, Streamlit, Gemini, smolagents, Folium]
 github: https://github.com/yuan25j/autonomous-ai-travel-agent
+demo: https://autonomous-ai-travel-agent-yuan.streamlit.app/
 featured: true
 category: software
 problem: Planning a trip from a single sentence means assembling an itinerary, a budget, and a map, and keeping hotel and activity pins readable when several days share one destination.

@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
 import Timeline from "../components/Timeline.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import ProjectGraphic from "../components/ProjectGraphic.astro";
+import ProjectPreview from "../components/ProjectPreview.astro";
 import Skills from "../components/Skills.astro";
 import ProcessGraphic from "../components/ProcessGraphic.astro";
 import ContactBand from "../components/ContactBand.astro";
@@ -43,7 +43,7 @@ const projects = allProjects
         >
           <p class="eyebrow">{project.data.category === "research" ? "Research" : "Software"}</p>
           <h3>{project.data.title}</h3>
-          <ProjectGraphic id={project.id} compact />
+          <ProjectPreview id={project.id} compact />
           <p class="muted">{project.data.description}</p>
           <span class="back-link">View case study ↗</span>
         </a>

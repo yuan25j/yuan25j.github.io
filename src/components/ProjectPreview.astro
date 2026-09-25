@@ -1,0 +1,125 @@
+---
+interface Props {
+  id: string;
+  compact?: boolean;
+}
+
+const { id, compact = false } = Astro.props;
+const variant =
+  id.includes("travel") ? "travel" :
+  id.includes("course-scheduler") ? "scheduler" :
+  id.includes("equipment") ? "equipment" :
+  id.includes("registration") ? "registration" :
+  id.includes("akari") ? "akari" :
+  id.includes("weather") ? "weather" :
+  id.includes("fingerprinting") ? "fingerprint" :
+  id.includes("llm-vs") ? "comparison" :
+  id.includes("rag-") ? "rag" : "result";
+
+const titles: Record<string, string> = {
+  travel: "Itinerary",
+  scheduler: "Week view",
+  equipment: "Inventory",
+  registration: "Check-in",
+  akari: "Puzzle",
+  weather: "Chapel Hill",
+  fingerprint: "Attribution",
+  comparison: "Scores",
+  rag: "Headline",
+  result: "Result",
+};
+---
+
+<div class:list={["product-preview", { compact }]} data-variant={variant}>
+  <div class="product-chrome">
+    <span></span><span></span><span></span>
+    <strong>{titles[variant]}</strong>
+  </div>
+  <div class="product-screen">
+    {variant === "travel" && (
+      <div class="preview-split">
+        <ol class="preview-days">
+          <li><i class="pin stay"></i><span>Stay</span><b>Hotel</b></li>
+          <li><i class="pin day-a"></i><span>Day 1</span><b>Rim walk</b></li>
+          <li><i class="pin day-b"></i><span>Day 2</span><b>Harbor dinner</b></li>
+        </ol>
+        <div class="preview-map" aria-hidden="true">
+          <i class="pin stay" style="--x: 22%; --y: 28%"></i>
+          <i class="pin day-a" style="--x: 58%; --y: 46%"></i>
+          <i class="pin day-b" style="--x: 74%; --y: 68%"></i>
+        </div>
+      </div>
+    )}
+
+    {variant === "scheduler" && (
+      <div class="preview-week" aria-hidden="true">
+        <div><span>Mon</span><b style="--row: 1; --span: 2">COMP 110</b></div>
+        <div><span>Tue</span><b class="soft" style="--row: 2; --span: 2">COMP 210</b></div>
+        <div><span>Wed</span><b style="--row: 1; --span: 1">COMP 283</b></div>
+        <div><span>Thu</span><b class="soft" style="--row: 3; --span: 2">COMP 411</b></div>
+        <div><span>Fri</span></div>
+      </div>
+    )}
+
+    {variant === "equipment" && (
+      <ul class="preview-rows">
+        <li><b>Canon R6</b><span class="state ready">Available</span></li>
+        <li><b>Projector</b><span class="state loan">On loan</span></li>
+        <li><b>Tripod kit</b><span class="state ready">Available</span></li>
+      </ul>
+    )}
+
+    {variant === "registration" && (
+      <ul class="preview-rows">
+        <li><b>Alex Kim</b><span>Checked in · 9:14 AM</span></li>
+        <li><b>Jordan Lee</b><span>Checked in · 9:22 AM</span></li>
+        <li><b>Sam Patel</b><span>Waiting</span></li>
+      </ul>
+    )}
+
+    {variant === "akari" && (
+      <div class="preview-akari" aria-hidden="true">
+        <i></i><i class="bulb"></i><i class="block"></i><i></i>
+        <i class="block"></i><i></i><i></i><i class="bulb"></i>
+        <i></i><i></i><i class="block"></i><i></i>
+        <i class="bulb"></i><i class="block"></i><i></i><i></i>
+      </div>
+    )}
+
+    {variant === "weather" && (
+      <div class="preview-weather">
+        <span>Chapel Hill</span>
+        <strong>72°</strong>
+        <span>Clear · light wind</span>
+      </div>
+    )}
+
+    {variant === "fingerprint" && (
+      <div class="preview-result">
+        <p>Generated text with a stable phrasing pattern across samples.</p>
+        <b>Source model · identified</b>
+      </div>
+    )}
+
+    {variant === "comparison" && (
+      <div class="preview-bars" aria-hidden="true">
+        <div><span>LLM</span><i style="--score: 91%"></i><b>0.91</b></div>
+        <div><span>ML</span><i class="soft" style="--score: 74%"></i><b>0.74</b></div>
+      </div>
+    )}
+
+    {variant === "rag" && (
+      <div class="preview-rag">
+        <p>Source note on the retrieved article.</p>
+        <b>Headline grounded in that source</b>
+      </div>
+    )}
+
+    {variant === "result" && (
+      <div class="preview-result">
+        <p>A short result from the project, shown in the product frame.</p>
+        <b>Case study</b>
+      </div>
+    )}
+  </div>
+</div>

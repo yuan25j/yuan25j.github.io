@@ -2,7 +2,8 @@
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CaseStudyFrame from "../../components/CaseStudyFrame.astro";
-import ProjectGraphic from "../../components/ProjectGraphic.astro";
+import ProjectPreview from "../../components/ProjectPreview.astro";
+import LiveDemo from "../../components/LiveDemo.astro";
 
 export async function getStaticPaths() {
   const entries = (await getCollection("projects"))
@@ -25,11 +26,12 @@ interface Props {
 
 const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
+const liveDemo = entry.data.demo?.includes("streamlit.app") ? entry.data.demo : undefined;
 const meta = [
   { label: "Year", value: String(entry.data.date.getUTCFullYear()) },
   { label: "Stack", value: entry.data.skills.slice(0, 3).join(", ") },
   ...(entry.data.github ? [{ label: "Source", value: "GitHub ↗", href: entry.data.github }] : []),
-  ...(entry.data.demo ? [{ label: "Demo", value: "Watch ↗", href: entry.data.demo }] : []),
+  ...(entry.data.demo ? [{ label: "Demo", value: liveDemo ? "Open app ↗" : "Watch ↗", href: entry.data.demo }] : []),
 ];
 ---
 
@@ -46,7 +48,7 @@ const meta = [
     next={next ? { href: `/projects/${next.id}/`, label: next.data.title, kicker: next.data.category === "research" ? "Next research" : "Next software" } : undefined}
   >
     <div class="case-visual shell" slot="visual" data-reveal>
-      <ProjectGraphic id={entry.id} />
+      {liveDemo ? <LiveDemo url={liveDemo} title={entry.data.title} /> : <ProjectPreview id={entry.id} />}
     </div>
     <p class="eyebrow">The problem</p>
     <h2>{entry.data.problem}</h2>
