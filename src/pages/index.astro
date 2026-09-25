@@ -13,7 +13,7 @@ const work = (await getCollection("work"))
   .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
 const allProjects = (await getCollection("projects"))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const highlightedIds = ["unc-course-scheduler", "llm-fingerprinting"];
+const highlightedIds = ["autonomous-ai-travel-agent", "unc-course-scheduler"];
 const highlightedProjects = highlightedIds
   .map((id) => allProjects.find((project) => project.id === id))
   .filter((project) => project !== undefined);
@@ -30,7 +30,7 @@ const projects = allProjects
         <p class="eyebrow">Selected work</p>
         <h2 id="featured-title">Featured projects.</h2>
       </div>
-      <p>Two projects covering constrained optimization and language-model research.</p>
+      <p>A natural-language travel planner and a course scheduler built with integer linear programming.</p>
     </div>
     <div class="bento">
       {highlightedProjects.map((project, index) => (

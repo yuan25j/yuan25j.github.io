@@ -13,6 +13,7 @@ const variant =
   id.includes("equipment") ? "equipment" :
   id.includes("registration") ? "registration" :
   id.includes("akari") ? "akari" :
+  id.includes("travel") ? "travel" :
   id.includes("weather") ? "weather" : "code";
 ---
 
@@ -108,6 +109,23 @@ const variant =
         <circle class="graphic-accent graphic-node" cx="270" cy="90" r="12" />
         <circle class="graphic-accent graphic-node" cx="90" cy="170" r="12" />
         <path class="graphic-accent-line draw-line" d="M270 41v31M270 108v83M192 90h60M288 90h112M90 121v31M90 188v20M61 170h11M108 170h131" />
+      </g>
+    )}
+
+    {variant === "travel" && (
+      <g>
+        <rect class="graphic-paper graphic-node" x="36" y="36" width="250" height="168" rx="16" />
+        <path class="graphic-line" d="M36 92h250M36 148h250M120 36v168M204 36v168" />
+        <path class="graphic-accent-line draw-line" d="M78 164c34-46 48-18 78-52 24-28 46-16 70 6" />
+        <circle class="graphic-fill graphic-node" cx="86" cy="68" r="11" />
+        <circle class="graphic-accent graphic-node" cx="156" cy="112" r="11" />
+        <circle class="graphic-fill-soft graphic-node" cx="228" cy="74" r="11" />
+        <circle class="graphic-accent graphic-node" cx="246" cy="158" r="11" />
+        <circle class="graphic-fill graphic-node" cx="318" cy="58" r="7" />
+        <circle class="graphic-accent graphic-node" cx="318" cy="98" r="7" />
+        <circle class="graphic-fill-soft graphic-node" cx="318" cy="138" r="7" />
+        <circle class="graphic-accent graphic-node" cx="318" cy="178" r="7" />
+        <path class="graphic-line draw-line" d="M338 58h98M338 98h78M338 138h92M338 178h64" />
       </g>
     )}
 
