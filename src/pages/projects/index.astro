@@ -12,32 +12,19 @@ const researchProjects = projects.filter((project) => project.data.category === 
 const softwareProjects = projects.filter((project) => project.data.category === "software");
 ---
 
-<BaseLayout title="Projects" description="Research and software projects by John Yuan.">
+<BaseLayout title="Projects" description="Software and research projects by John Yuan.">
   <PageHero
-    eyebrow="Research · Software"
+    eyebrow="Software · Research"
     title="Projects."
-    lede="Research work in machine learning and LLMs, plus selected software projects."
+    lede="Selected software projects, plus research in machine learning and LLMs."
     layout="split"
   >
-    <ProcessGraphic kind="research" />
+    <ProcessGraphic kind="stack" />
     <nav class="category-chips" slot="actions" aria-label="Project categories">
-      <a href="#research">Research ({researchProjects.length})</a>
       <a href="#software">Software ({softwareProjects.length})</a>
+      <a href="#research">Research ({researchProjects.length})</a>
     </nav>
   </PageHero>
-
-  <section class="section shell" id="research">
-    <div class="section-head" data-reveal>
-      <div>
-        <p class="eyebrow">Research</p>
-        <h2>Research projects.</h2>
-      </div>
-      <p>Technical research involving language models, NLP, retrieval-augmented generation, and machine learning.</p>
-    </div>
-    <div class="project-grid">
-      {researchProjects.map((project, index) => <ProjectCard project={project} index={index} />)}
-    </div>
-  </section>
 
   <section class="section shell" id="software">
     <div class="section-head" data-reveal>
@@ -49,6 +36,19 @@ const softwareProjects = projects.filter((project) => project.data.category === 
     </div>
     <div class="project-grid">
       {softwareProjects.map((project, index) => <ProjectCard project={project} index={index} />)}
+    </div>
+  </section>
+
+  <section class="section shell" id="research">
+    <div class="section-head" data-reveal>
+      <div>
+        <p class="eyebrow">Research</p>
+        <h2>Research projects.</h2>
+      </div>
+      <p>Technical research involving language models, NLP, retrieval-augmented generation, and machine learning.</p>
+    </div>
+    <div class="project-grid">
+      {researchProjects.map((project, index) => <ProjectCard project={project} index={index} />)}
     </div>
   </section>
 
